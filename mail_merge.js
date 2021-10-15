@@ -38,7 +38,7 @@ function onOpen() {
  * @param {string} subjectLine (optional) for the email draft message
  * @param {Sheet} sheet to read data from
 */
-function sendEmails(subjectLine, sheet = SpreadsheetApp.getActiveSheet()) {
+function sendEmails(subjectLine, sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Transactions")) {
     // option to skip browser prompt if you want to use this code in other projects
     if (!subjectLine) {
         subjectLine = Browser.inputBox("Mail Merge",
@@ -56,7 +56,7 @@ function sendEmails(subjectLine, sheet = SpreadsheetApp.getActiveSheet()) {
     const emailTemplate = getGmailTemplateFromDrafts_(subjectLine);
 
     // get the data from the passed sheet
-    const dataRange = sheet.getDataRange();
+    const dataRange = sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn())//getDataRange();
     // Fetch displayed values for each row in the Range HT Andrew Roberts 
     // https://mashe.hawksey.info/2020/04/a-bulk-email-mail-merge-with-gmail-and-google-sheets-solution-evolution-using-v8/#comment-187490
     // @see https://developers.google.com/apps-script/reference/spreadsheet/range#getdisplayvalues
@@ -110,7 +110,7 @@ function sendEmails(subjectLine, sheet = SpreadsheetApp.getActiveSheet()) {
     });
 
     // updating the sheet with new data
-    sheet.getRange(2, emailSentColIdx + 1, out.length).setValues(out);
+    sheet.getRange(3, emailSentColIdx + 1, out.length).setValues(out);
 
     /**
      * Get a Gmail draft message by matching the subject line.
