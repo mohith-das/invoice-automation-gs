@@ -1,6 +1,14 @@
 # Invoice Automation (Google Sheets)
 
-Apps Script utilities to generate invoices, PDFs, and email them from a Google Sheet workflow.
+Apps Script workflow to generate invoice rows, render PDFs, and email them from Google Sheets.
+
+## Highlights
+- Generates transaction rows with formulas and lookups.
+- Creates invoice PDFs from a Docs template.
+- Sends invoices using Gmail draft templates.
+
+## Tech
+Apps Script, Google Sheets, Gmail, Google Drive
 
 ## Scripts
 - `Initialize_sheets.js` - setup notes and formulas for sheet structure.
@@ -20,4 +28,3 @@ Apps Script utilities to generate invoices, PDFs, and email them from a Google S
 
 ## Notes
 - Gmail quotas apply.
-- Customize templates and sheet layout for your workflow.
