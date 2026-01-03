@@ -23,11 +23,7 @@
 const RECIPIENT_COL  = "Recipient";
 const EMAIL_SENT_COL = "Email Sent";
 const RECIPIENT_CC = "CC";
-<<<<<<< Updated upstream
  
-=======
-
->>>>>>> Stashed changes
 /** 
  * Creates the menu item "Mail Merge" for user to run scripts on drop-down.
  */
@@ -156,69 +152,6 @@ function sendEmails(subjectLine, sheet=SpreadsheetApp.getActiveSpreadsheet().get
     } catch(e) {
       throw new Error("Oops - can't find Gmail draft");
     }
-<<<<<<< Updated upstream
-=======
-
-    // get the draft Gmail message to use as a template
-    const emailTemplate = getGmailTemplateFromDrafts_(subjectLine);
-
-    // get the data from the passed sheet
-    const dataRange = sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn())//getDataRange();
-    // Fetch displayed values for each row in the Range HT Andrew Roberts 
-    // https://mashe.hawksey.info/2020/04/a-bulk-email-mail-merge-with-gmail-and-google-sheets-solution-evolution-using-v8/#comment-187490
-    // @see https://developers.google.com/apps-script/reference/spreadsheet/range#getdisplayvalues
-    const data = dataRange.getDisplayValues();
-
-    // assuming row 1 contains our column headings
-    const heads = data.shift();
-
-    // get the index of column named 'Email Status' (Assume header names are unique)
-    // @see http://ramblings.mcpher.com/Home/excelquirks/gooscript/arrayfunctions
-    const emailSentColIdx = heads.indexOf(EMAIL_SENT_COL);
-
-    // convert 2d array into object array
-    // @see https://stackoverflow.com/a/22917499/1027723
-    // for pretty version see https://mashe.hawksey.info/?p=17869/#comment-184945
-    const obj = data.map(r => (heads.reduce((o, k, i) => (o[k] = r[i] || '', o), {})));
-
-    // used to record sent emails
-    const out = [];
-
-    // loop through all the rows of data
-    obj.forEach(function (row, rowIdx) {
-        // only send emails is email_sent cell is blank and not hidden by filter
-        if (row[EMAIL_SENT_COL] == '') {
-            try {
-                const msgObj = fillInTemplateFromObject_(emailTemplate.message, row);
-
-                // @see https://developers.google.com/apps-script/reference/gmail/gmail-app#sendEmail(String,String,String,Object)
-                // if you need to send emails with unicode/emoji characters change GmailApp for MailApp
-                // Uncomment advanced parameters as needed (see docs for limitations)
-                GmailApp.sendEmail(row[RECIPIENT_COL], msgObj.subject, msgObj.text, {
-                    htmlBody: msgObj.html,
-                    // bcc: 'a.bbc@email.com',
-                    cc: row[RECIPIENT_CC],
-                    // from: 'an.alias@email.com',
-                    // name: 'name of the sender',
-                    // replyTo: 'a.reply@email.com',
-                    // noReply: true, // if the email should be sent from a generic no-reply email address (not available to gmail.com users)
-                    attachments: emailTemplate.attachments,
-                    inlineImages: emailTemplate.inlineImages
-                });
-                // modify cell to record email sent date
-                out.push([new Date()]);
-            } catch (e) {
-                // modify cell to record error
-                out.push([e.message]);
-            }
-        } else {
-            out.push([row[EMAIL_SENT_COL]]);
-        }
-    });
-
-    // updating the sheet with new data
-    sheet.getRange(3, emailSentColIdx + 1, out.length).setValues(out);
->>>>>>> Stashed changes
 
     /**
      * Filter draft objects with the matching subject linemessage by matching the subject line.
